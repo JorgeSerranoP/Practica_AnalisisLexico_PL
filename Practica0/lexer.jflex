@@ -57,7 +57,6 @@ import java.io.InputStreamReader;
 Newline    = \r | \n | \r\n
 Whitespace = [ \t\f] | {Newline}
 Number     = [0-9]+
-RealNumber = [-+]?[0-9]*.?[0-9]+([eE][-+]?[0-9]+)?
 
 /* comments */
 Comment = {TraditionalComment} | {EndOfLineComment}
@@ -88,7 +87,6 @@ ident = ([:jletter:] | "_" ) ([:jletterdigit:] | [:jletter:] | "_" )*
   "("          { return symbolFactory.newSymbol("LPAREN", LPAREN); }
   ")"          { return symbolFactory.newSymbol("RPAREN", RPAREN); }
   {Number}     { return symbolFactory.newSymbol("NUMBER", NUMBER, Integer.parseInt(yytext())); }
-  {RealNumber} { return symbolFactory.newSymbol("REALNUMBER", REALNUMBER, Double.parseDouble(yytext())); }
   {Comment}    { }
 }
 

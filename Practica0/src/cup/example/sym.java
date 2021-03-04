@@ -10,7 +10,6 @@ public interface sym {
   /* terminals */
   public static final int MINUS = 4;
   public static final int UMINUS = 5;
-  public static final int REALNUMBER = 11;
   public static final int NUMBER = 10;
   public static final int SEMI = 2;
   public static final int EOF = 0;
@@ -31,8 +30,7 @@ public interface sym {
   "LPAREN",
   "RPAREN",
   "DIVISION",
-  "NUMBER",
-  "REALNUMBER"
+  "NUMBER"
   };
 }
 
