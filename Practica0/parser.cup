@@ -31,16 +31,18 @@ init with {:
 scan with {: return lexer.next_token(); :};
 
 /* Terminals (tokens returned by the scanner). */
-terminal            SEMI, PLUS, MINUS, UMINUS, TIMES, LPAREN, RPAREN;
+terminal            SEMI, PLUS, MINUS, UMINUS, TIMES, LPAREN, RPAREN, DIVISION;
 terminal Integer    NUMBER;        // our scanner provides numbers as integers
+terminal Double 	REALNUMBER;
 
 /* Non terminals */
 non terminal            expr_list;
-non terminal Integer    expr;      // used to store evaluated subexpressions
+non terminal Double    expr;      // used to store evaluated subexpressions
 
 /* Precedences */
 precedence left PLUS, MINUS;
 precedence left TIMES;
+precedence left DIVISION;
 precedence left UMINUS;
 
 /* The grammar rules */
@@ -48,12 +50,15 @@ expr_list ::= expr_list expr:e SEMI         {: System.out.println(e); :}
             | expr:e SEMI                   {: System.out.println(e); :}
             ;
             
-expr      ::= expr:e1 PLUS  expr:e2         {: RESULT = e1+e2;        :}
-             | expr:e1 MINUS expr:e2        {: RESULT = e1-e2;        :}
-             | expr:e1 TIMES expr:e2        {: RESULT = e1*e2;        :}
-             | MINUS expr:e                 {: RESULT = -e;           :}
+expr      ::= expr:e1 PLUS  expr:e2         {: $$ = $e1+$e2;        :}
+             | expr:e1 MINUS expr:e2        {: $$ = $e1-$e2;        :}
+             | expr:e1 TIMES expr:e2        {: $$ = $e1*$e2;        :}
+             | MINUS expr:e                 {: $$ = -$e;           :}
+             | PLUS expr:e                  {: $$ = +$e;           :}
+             | expr:e1 DIVISION expr:e2     {: $$ = $e1/$e2;        :}
              %prec UMINUS
-             | LPAREN expr:e RPAREN	         {: RESULT = e;           :}
-             | NUMBER:n	                     {: RESULT = n;           :}
+             | LPAREN expr:e RPAREN	         {: $$ = e;           :}
+             | NUMBER:n	                     {: $$ = n;           :}
+             | REALNUMBER:n	                 {: $$ = n;           :}
              ;
        
